@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #message-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        #message-list li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <title>SOS Messages</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js" integrity="sha512-3t1+O2F/ZQuS/jD57e/txDz8lSFlfyDFgGVljD1jqlzZjBZtYIBDMblqJ5z0P3LwC7N3AlbPfqN6cqCE1a4b8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>SOS Messages:</h1>
+    <center>
+        <li id="message-list">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </li>
+    </center>
+
+    <script>
+        var socket = io();
+
+        // Listen for 'update_messages' event from server
+        socket.on('update_messages', function(data) {
+            // Clear existing messages
+            $('#message-list').empty();
+            // Update the list of messages
+            data.messages.forEach(function(message) {
+                $('#message-list').append('<li>' + message + '</li>');
+            });
+        });
+    </script>
+</body>
+</html>
